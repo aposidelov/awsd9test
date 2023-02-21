@@ -1,0 +1,10 @@
+coh2_varnish.settings:
+  type: config_object
+  label: 'Coh2 varnish settings'
+  mapping:
+    content_types:
+      type: sequence
+      label: 'Content types'
+      sequence:
+        type: string
+        label: 'Content type'

@@ -1,0 +1,15 @@
+name: Coh2
+type: theme
+description: 'Coh2 website custom theme.'
+core: 8.x
+libraries:
+  - coh2/global-styling
+base theme: stark
+regions:
+  navbar_left: 'Navbar Left'
+  navbar_right: 'Navbar Right'
+  header: Header
+  content: Content
+  sidebar_right: 'Sidebar right'
+  footer: Footer
+  breadcrumb: Breadcrumb

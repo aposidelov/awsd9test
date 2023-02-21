@@ -1,0 +1,202 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ *
+ * @ingroup themeable
+ */
+
+#}
+<article class="building-node content-node">
+
+  <div class="content-section">
+    {{ content|without('field_base_repair_rate_per_unit','field_repair_unit_weight','field_is_repair_unit','field_repair_upg_ca','field_vet_repair_rate_per_unit','field_image_small', 'field_front_title', 'field_abilities', 'field_building_type', 'field_unlocked_by_improvement', 'field_unlocked_by_doctrine', 'field_build_time', 'field_fuel', 'field_health', 'field_image', 'field_manpower', 'field_munitions', 'field_nation', 'field_produce_units', 'field_weapon_improvements') }}
+    {% if content.field_weapon_improvements[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_weapon_improvements['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_weapon_improvements }}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    {% endif %}
+    {% if content.field_abilities[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_abilities['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_abilities }}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    {% endif %}
+    {% if content.field_produce_units[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_produce_units['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+              {{ content.field_produce_units }}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="right-section">
+    <div class="section-wrapper">
+      <div class="section-item pictures">
+        {{ content.field_image }}
+      </div>
+      <div class="section-item label-value nation">
+        <label class="title">{{ content.field_nation['#title'] }}</label>
+        <div class="value-item">
+          {{ content.field_nation }}
+        </div>
+      </div>
+      {% if content.field_manpower['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ 'Cost'|t }}</label>
+        <div class="value-item">
+          {{ content.field_manpower }}
+          {{ content.field_fuel }}
+          {{ content.field_munitions }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_build_time['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_build_time['#title'] }}</label>
+        <div class="value-item">
+          {{ content.field_build_time }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_building_type['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_building_type['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_building_type }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_health['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_health['#title'] }}</label>
+        <div class="value-item">
+          <table class="weapon-info-table">
+            {{ content.field_health }}
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    {% if content.field_unlocked_by_improvement['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_unlocked_by_improvement['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_unlocked_by_improvement }}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+</article>

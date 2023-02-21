@@ -1,0 +1,15 @@
+coh2_varnish.purge:
+  path: '/admin/config/coh2_varnish/purge'
+  defaults:
+    _form: '\Drupal\coh2_varnish\Form\VarnishPurgeForm'
+    _title: 'Coh2 Varnish Purge'
+  requirements:
+    _permission: 'admin content'
+
+coh2_varnish.settings:
+  path: '/admin/config/coh2_varnish/settings'
+  defaults:
+    _form: '\Drupal\coh2_varnish\Form\SettingsForm'
+    _title: 'Coh2 Varnish Settings'
+  requirements:
+    _permission: 'admin content'

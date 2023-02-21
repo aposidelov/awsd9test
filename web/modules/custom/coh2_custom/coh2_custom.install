@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Set the default devel dumper plugin.
+ */
+function coh2_custom_update_8002() {
+  coh2_custom_change_text_field_max_length('paragraph', 'field_vet_details', 512);
+}

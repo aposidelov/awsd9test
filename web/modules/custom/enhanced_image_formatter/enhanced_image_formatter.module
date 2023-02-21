@@ -1,0 +1,10 @@
+<?php
+
+use Drupal\enhanced_image_formatter\Plugin\Field\FieldFormatter\EnhancedImageFormatter;
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function enhanced_image_formatter_field_formatter_info_alter(array &$info) {
+  $info['image']['class'] = EnhancedImageFormatter::class;
+}

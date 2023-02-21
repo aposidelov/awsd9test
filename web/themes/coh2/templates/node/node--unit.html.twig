@@ -1,0 +1,499 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+ *   Only method names starting with "get", "has", or "is" and a few common
+ *   methods such as "id", "label", and "bundle" are available. For example:
+ *   - node.getCreatedTime() will return the node creation timestamp.
+ *   - node.hasField('field_example') returns TRUE if the node bundle includes
+ *     field_example. (This does not indicate the presence of a value in this
+ *     field.)
+ *   - node.isPublished() will return whether the node is published or not.
+ *   Calling other methods, such as node.delete(), will result in an exception.
+ *   See \Drupal\node\Entity\Node for a full list of public properties and
+ *   methods for the node object.
+ * - label: (optional) The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: (optional) Themed creation date field.
+ * - author_name: (optional) Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ *
+ * @todo Remove the id attribute (or make it a class), because if that gets
+ *   rendered twice on a page this is invalid CSS for example: two lists
+ *   in different view modes.
+ *
+ * @ingroup themeable
+ */
+
+#}
+<article class="unit-node content-node">
+
+  <div class="content-section">
+    {{ content|without('field_capture_rate','field_capture_rate_vet','field_capture_rate_weight','field_decapture_rate','field_decapture_rate_vet','field_is_capture_unit','field_is_repair_unit','field_repair_unit_weight','field_ambush_ability','field_group_amount_upg_vet','field_base_repair_rate_per_unit','field_vet_repair_rate_per_unit','field_repair_upg_ca','field_stealth_detection_range','field_camouflage_uncover_range','field_camouflage_hold_time','field_shells', 'field_shells_vet', 'field_flame_unit_weight', 'field_is_flame_unit', 'field_anti_air_units_weight', 'field_is_anti_air_unit', 'field_wipe_abilities', 'field_incr_sight_range_weight', 'field_is_incr_right_range_unit', 'field_medical_unit_weight', 'field_is_medical_unit', 'field_short_range_squad_weight', 'field_is_short_range_squad', 'field_small_image', 'field_long_range_penetration_vet', 'field_long_range_penetration', 'field_range_of_fire_vet', 'field_sight_range_vet', 'field_strength_vet', 'field_damage_on_penetration_vets', 'field_damage_on_penetration', 'field_damage_on_non_penetration', 'field_related_units', 'field_range_of_fire', 'field_sight_range', 'field_effective_against', 'field_combat_advantage', 'field_badge_image', 'field_builds_by', 'field_badge_weapon_image', 'field_weapon', 'field_parent', 'field_image', 'field_abilities', 'field_nation', 'field_manpower', 'field_fuel', 'field_munitions', 'field_capacity', 'field_group_amount', 'field_build_time', 'field_builds_in', 'field_reinforce_cost', 'field_veterancy_items', 'field_weapon_improvements', 'field_unlocked_by_doctrine', 'field_unlocked_by_improvement', 'field_unit_type', 'field_is_doctrine_unit', 'field_front_title', 'field_is_over_parent_abilities', 'field_unit_health', 'field_producible_in_doctrines', 'field_produce_base_buildings', 'field_produce_field_buildings', 'field_produce_small_forts', 'field_medium_range_squad_weight','field_is_medium_range_squad‎','field_long_range_squad_weight‎','field_is_long_range_squad‎','field_builders_weight‎','field_is_builders','field_anti_tank_squad_weight‎','field_is_anti_tank_squad‎','field_eng_damage_squads_weight','field_is_engine_damage_squads','field_ambush_squads_weight‎','field_is_ambush_squads','field_miners_weight','field_is_miners','field_squad_wipers_weight‎','field_is_squad_wipers‎','field_snipers_weight','field_is_snipers‎','field_stealth_detectors_weight‎','field_is_stealth_detectors‎','field_scout_cars_weight‎','field_is_scout_cars‎','field_light_vehicles_weight‎','field_is_light_vehicles‎','field_li_tanks_arm_cars_weight‎','field_is_light_tanks_armored_car‎','field_medium_tanks_weight','field_is_medium_tanks‎','field_heavy_tanks_weight‎','field_is_heavy_tanks‎','field_tank_destroyers_weight‎','field_is_tank_destroyers‎','field_rocket_launchers_weight‎','field_is_rocket_launchers‎','field_machine_guns_weight‎','field_is_machine_guns‎','field_anti_tank_guns_weight‎','field_is_anti_tank_guns‎','field_mors_and_sup_guns_weight','field_is_mortars_and_sup_guns','field_long_range_art_weight','field_is_long_range_artillery‎','field_heavy_mort_ast_guns_weight','field_is_heavy_mortar_aslt_guns','field_salvage_squad_weight','field_is_salvage_squad','field_cover_squads_weight','field_is_cover_squads','field_aura_units_weight','field_is_aura_units','field_resource_booster_weight', 'field_is_resource_booster','field_reinforcers_weight ','field_is_reinforcers','field_field_emplacements_weight','field_is_field_emplacements','field_heavy_anti_tank_em_weight ','field_is_heavy_anti_tank_emp','field_anti_inf_aslt_guns_weight','field_is_anti_inf_aslt_guns','field_transports_weight','field_is_transport','field_inf_sup_guns_weight','field_is_inf_sup_guns','field_speed','field_speed_vet','field_acc','field_acc_vet','field_rotate_speed','field_rotate_speed_vet','field_armor_front','field_armor_front_vet','field_armor_back','field_armor_back_vet','field_received_accuracy','field_received_accuracy_vet','field_reload_speed','field_reload_speed_vet','field_long_range_pen_num','field_long_range_pen_num_vet','field_medium_range_pen_num','field_medium_range_pen_num_vet','field_short_range_pen_num','field_short_range_pen_num_vet','field_minimal_crew','field_mortar_bar_rof','field_mortar_bar_rof_vet','field_smoke_bar_rof','field_smoke_bar_rof_vet') }}
+    {{ compare_button }}
+    {% if content.field_weapon_improvements[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_weapon_improvements['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_weapon_improvements }}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    {% endif %}
+    {% if content.field_abilities[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_abilities['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_abilities }}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    {% endif %}
+    {% if content.field_produce_small_forts[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_produce_small_forts['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_produce_small_forts }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+    {% if content.field_produce_field_buildings[0] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_produce_field_buildings['#title'] }}</h2>
+        <div class="section-item">
+          <table class="unit--improvements-table">
+            <thead>
+            <tr>
+              <th class="name"></th>
+              <th class="description"></th>
+              <th class="dependencies"><div><div class="dep1">{{ 'Unlocked by'|t }}</div><div class="dep2">{{ 'Available for commanders'|t }}</div></div></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ content.field_produce_field_buildings }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="right-section">
+    <div class="section-wrapper">
+      <div class="section-item pictures">
+        {{ content.field_badge_image }}
+        {{ content.field_badge_weapon_image }}
+        {{ content.field_image }}
+      </div>
+      {% if content.field_parent['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ 'Origin Unit'|t }}</label>
+        <div class="value-item">
+          {{ content.field_parent }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_nation['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_nation['#title'] }}</label>
+        <div class="value-item">
+          {{ content.field_nation }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_manpower['#title'] is not empty or content.field_fuel['#title'] is not empty or content.field_munitions['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ 'Cost'|t }}</label>
+        <div class="value-item">
+          {{ content.field_manpower }}
+          {{ content.field_fuel }}
+          {{ content.field_munitions }}
+          {{ content.field_capacity }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_group_amount['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_group_amount['#title'] }}</label>
+        <div class="value-item">
+          {{ content.field_group_amount }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_minimal_crew['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_minimal_crew['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_minimal_crew }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_weapon['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_weapon['#title'] }}</label>
+        <div class="value-item">
+          <table class="weapon-info-table">
+            {{ content.field_weapon }}
+          </table>
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_sight_range['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_sight_range['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_sight_range }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_sight_range_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_sight_range_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_sight_range_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_range_of_fire['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_range_of_fire['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_range_of_fire }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_range_of_fire_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_range_of_fire_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_range_of_fire_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_mortar_bar_rof['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_mortar_bar_rof['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_mortar_bar_rof }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_mortar_bar_rof_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_mortar_bar_rof_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_mortar_bar_rof_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_smoke_bar_rof['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_smoke_bar_rof['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_smoke_bar_rof }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_smoke_bar_rof_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_smoke_bar_rof_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_smoke_bar_rof_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_damage_on_penetration['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_damage_on_penetration['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_damage_on_penetration }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_damage_on_penetration_vets['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_damage_on_penetration_vets['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_damage_on_penetration_vets }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_damage_on_non_penetration['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_damage_on_non_penetration['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_damage_on_non_penetration }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_reinforce_cost['#title'] is not empty %}
+      <div class="section-item label-value">
+        <label class="title">{{ content.field_reinforce_cost['#title'] }}</label>
+        <div class="value-item">
+          {{ content.field_reinforce_cost }}
+        </div>
+      </div>
+      {% endif %}
+      {% if content.field_unit_health['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_unit_health['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_unit_health }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_strength_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_strength_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_strength_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_effective_against['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_effective_against['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_effective_against }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_combat_advantage['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_combat_advantage['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_combat_advantage }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_long_range_pen_num['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_long_range_pen_num['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_long_range_pen_num }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_long_range_pen_num_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_long_range_pen_num_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_long_range_pen_num_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_armor_front['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ 'Armor (front / back)'|t }}</label>
+          <div class="value-item">
+            {{ content.field_armor_front }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_armor_front_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ 'Armor (front / back) (veterancy)'|t }}</label>
+          <div class="value-item">
+            {{ content.field_armor_front_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_speed['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_speed['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_speed }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_speed_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_speed_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_speed_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_reload_speed['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_reload_speed['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_reload_speed }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_reload_speed_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_reload_speed_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_reload_speed_vet }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_group_amount['#title'] is not empty
+        and content.field_received_accuracy['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_received_accuracy['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_received_accuracy }}
+          </div>
+        </div>
+      {% endif %}
+      {% if content.field_group_amount['#title'] is not empty
+        and content.field_received_accuracy_vet['#title'] is not empty %}
+        <div class="section-item label-value">
+          <label class="title">{{ content.field_received_accuracy_vet['#title'] }}</label>
+          <div class="value-item">
+            {{ content.field_received_accuracy_vet }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if content.field_builds_in['#title'] is not empty %}
+    <div class="section-wrapper">
+      <h2>{{ content.field_builds_in['#title'] }}</h2>
+      <div class="section-item">
+        {{ content.field_builds_in }}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if content.field_builds_by['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_builds_by['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_builds_by }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if content.field_related_units['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_related_units['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_related_units }}
+        </div>
+      </div>
+    {% endif %}
+
+
+    {% if content.field_unlocked_by_improvement['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_unlocked_by_improvement['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_unlocked_by_improvement }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if content.field_unlocked_by_doctrine['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_unlocked_by_doctrine['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_unlocked_by_doctrine }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if content.field_veterancy_items['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_veterancy_items['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_veterancy_items }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if content.field_produce_base_buildings['#title'] is not empty %}
+      <div class="section-wrapper">
+        <h2>{{ content.field_produce_base_buildings['#title'] }}</h2>
+        <div class="section-item">
+          {{ content.field_produce_base_buildings }}
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+</article>

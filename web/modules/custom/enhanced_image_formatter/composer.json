@@ -1,0 +1,16 @@
+{
+  "name": "drupal/enhanced_image_formatter",
+  "description": "Wrap images with a link to the corresponding entity or the URL from a link field, can output tokenized ALT and TITLE text, use svg",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/enhanced_image_formatter",
+  "require": {
+    "drupal/svg_image": "^1.9",
+    "drupal/token": "*"
+  },
+  "support": {
+    "issues": "https://drupal.org/project/issues/enhanced_image_formatter",
+    "source": "https://git.drupalcode.org/project/enhanced_image_formatter"
+  },
+  "license": "GPL-2.0",
+  "minimum-stability": "dev"
+}

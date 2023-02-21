@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+  php-drupal:
+    container_name: "${PROJECT_NAME}_php"
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html:cached
+
+  nginx:
+    image: nginx:latest
+    container_name: "${PROJECT_NAME}_nginx"
+    volumes:
+      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+      - .:/var/www/html:cached
+    ports:
+      - 80:80
+    depends_on:
+      - php-drupal
+#      - mysql
+#
+#  mysql:
+#    image: mysql:8
+#    container_name: "${PROJECT_NAME}_mysql"
+#    environment:
+#      MYSQL_USER: $DB_USER
+#      MYSQL_PASSWORD: $DB_PASSWORD
+#      MYSQL_DATABASE: $DB_NAME
+#      MYSQL_ROOT_PASSWORD: root
+#    ports:
+#      - "${CONTAINER_DB_PORT}:3306"
+#    ulimits:
+#      nproc: 65535
+#      nofile:
+#        soft: 20000
+#        hard: 40000

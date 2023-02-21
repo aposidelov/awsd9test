@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions.
+ */
+
+/**
+ * Implements hook_install().
+*/
+function enhanced_image_formatter_install() {
+  // Increase module weight so that enhanced_image_formatter_field_formatter_info_alter is called after svg_image_field_formatter_info_alter.
+  module_set_weight('enhanced_image_formatter', 1);
+  
+  drupal_flush_all_caches();
+}

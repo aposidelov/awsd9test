@@ -1,0 +1,1072 @@
+* {
+  font-family: Helvetica; /*Verdana*/
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: green;
+}
+
+h1 {
+  padding: 25px 20px 0 20px;
+  margin: 0;
+}
+
+nav {
+
+  ol {
+
+    padding: 10px 16px;
+    list-style: none;
+    background-color: #eee;
+
+    li {
+      display: inline;
+      font-size: 18px;
+
+      &+li:before {
+        padding: 8px;
+        color: black;
+        content: "/\00a0";
+      }
+
+      a {
+
+        color: green;
+        text-decoration: none;
+
+        &:hover {
+          color: darkgreen;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.addtoany_list {
+  display: block;
+  margin-bottom: 15px;
+}
+
+div#block-addtoanybuttons {
+  margin: 10px 16px;
+}
+
+#coh-page, #coh-guide {
+  padding: 25px;
+  table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    tr:first-child {
+      td {
+        background-color: green;
+        color: white;
+      }
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid black;
+    }
+  }
+}
+
+.guide-author {
+  display: inline-block;
+  border-radius: 10px;
+  padding: 10px;
+  background: #e0e0e0;
+}
+
+.compare-button-link, a.more-details-link, .improvement-details .field-unit-override a {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #0f8018;
+  background: darkgreen;
+  color: white;
+  border-radius: 4px;
+  margin: 5px 0;
+  font-size: 12px !important;
+}
+
+.compare-button-link {
+  font-size: 16px !important;
+}
+
+.homepage-info {
+  text-align: center;
+  p {
+    padding: 0 10px;
+  }
+}
+
+.content-node {
+  display: flex;
+
+  .content-section {
+    flex: 2;
+    padding: 20px;
+
+    .body p {
+      margin-top: 0px;
+    }
+  }
+
+  .section-wrapper {
+    margin-top: 20px;
+    border: 2px solid #5c5c5b;
+    padding: 10px 10px 0px 10px;
+    background: #eeeeee;
+
+    & > h2 {
+      margin: 0;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #5c5c5b;
+    }
+  }
+
+  .section-item {
+    border-bottom: 2px solid #5c5c5b;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .field-builds-in > div {
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    justify-content: space-evenly;
+    .field-front-title {
+
+    }
+
+    .field-image {
+
+    }
+  }
+
+  table.weapon-info-table {
+    border-collapse: collapse;
+    tr {
+      border-bottom: 1px solid #5c5c5b;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      padding: 0;
+
+      &.name {
+        width: 96px;
+        text-align: left;
+      }
+
+      &.number {
+        text-align: left;
+
+        .field-weapon-number {
+          width: 30px;
+        }
+
+        & > div::before {
+          content: 'x';
+          display: inline-block;
+          margin-right: 5px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+
+  .field-combat-advantage, .field-effective-against {
+    div {
+      text-decoration: underline;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  table.unit--improvements-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    .field-image {
+      text-align: center;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0;
+      border-bottom: 2px solid #5c5c5b;
+
+      &.name {
+        width:120px;
+        text-align: center;
+        padding-bottom: 7px;
+      }
+      &.description {
+        width:220px;
+      }
+      &.dependencies {
+        &>div {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+    tbody tr {
+      padding: 0;
+      border-bottom: 2px solid #5c5c5b;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td:first-child {
+        padding: 5px 0;
+      }
+
+      .field-improvement, .field-ability-node {
+        margin: 0 auto;
+        width: 64px;
+      }
+
+      .improvement-details {
+        font-size: 13px;
+        .field-front-title, .field-title {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .body p {
+          margin: 0;
+        }
+        .field-unit-override a {
+          font-size: 15px;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        em > div {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .right-section {
+    padding: 0px 20px;
+    flex: 0 0 320px;
+    min-width: 320px;
+
+    .field-badge-image, .field-badge-weapon-image, .field-image {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .field-unlocked-by-doctrine, .field-producible-in-doctrines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .unlocked-by--available-in-doctrines {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.end {
+      justify-content: flex-end;
+    }
+
+    .unlocked-by {
+      margin-right: 20px;
+    }
+
+    .available-in-doctrines {
+      img {
+        display: block;
+      }
+    }
+
+    .field-unlocked-by-improvement.field__items {
+      display: flex;
+    }
+
+    .field-unlocked-by-doctrine.field__items {
+      display: flex;
+    }
+  }
+
+  .field-weapon-improvements {
+
+    & > div {
+      border-bottom: 2px solid #5c5c5b;
+      padding: 5px 0;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .paragraph--type--weapon-improvement.paragraph--view-mode--default {
+      display: flex;
+
+      .pictures {
+        flex: 3;
+        align-self: center;
+
+        strong {
+          font-size: 13px;
+        }
+      }
+
+      .field-munitions {
+        flex: 2;
+        align-self: center;
+      }
+
+      .details {
+        flex: 6;
+        align-self: center;
+        font-size: 13px;
+
+        .field-front-title, .field-title {
+          font-weight: bold;
+          padding: 5px 0;
+        }
+
+        p {
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .field-veterancy-items {
+    & > div {
+      border-bottom: 2px solid #5c5c5b;
+      padding: 5px 0;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    /* vet item */
+    .paragraph--type--vet-item.paragraph--view-mode--default {
+      display: flex;
+
+      .field-veterancy {
+        flex: 1;
+        align-self: center;
+
+        img {
+          width: 45px;
+          height: 45px;
+        }
+      }
+
+      .field-xp {
+        flex: 1;
+        font-size: 13px;
+        text-align: center;
+        align-self: center;
+      }
+
+      .details {
+        flex: 4;
+        margin: 0;
+        padding: 0;
+
+        .details-list {
+          list-style: decimal;
+        }
+
+        .field-vet-details {
+          font-size: 13px;
+
+          p {
+            padding: 0 10px;
+          }
+        }
+
+        .field-er-allows {
+          display: flex;
+          font-size: 13px;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  .label-value {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+
+    label {
+      text-align: center;
+      align-self: center;
+      flex: 1;
+      padding: 0 5px;
+    }
+
+    .value-item {
+      flex: 1;
+
+      .field-improvement-required .field-image {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .cost {
+    display: flex;
+    justify-content: center;
+
+    .field-manpower, .field-fuel, .field-munitions, .field-capacity, .field-reinforce-cost {
+      text-align: center;
+      &:before {
+        display: block;
+        margin-right: 0px;
+      }
+    }
+  }
+
+  &.nation-node {
+
+    .section-wrapper {
+
+      &:first-child {
+        margin-top: 0px;
+      }
+
+      .section-item p {
+        font-size: 14px;
+      }
+    }
+
+    .building-node {
+      padding: 10px;
+      border: 2px dotted #5c5c5b;
+      margin-bottom: 20px;
+    }
+
+    .left-section {
+      flex: 4;
+      padding: 20px;
+      min-width: initial;
+      .left-section, .right-section, .content-section {
+        padding: 0px;
+      }
+    }
+    .right-section {
+      flex: 2;
+      padding: 20px;
+      min-width: auto;
+
+      .section-wrapper {
+        margin-bottom: 10px;
+      }
+    }
+
+    .nation {
+      display: none;
+    }
+
+    .building-node {
+      display: block;
+
+      .pictures {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.field-doctrine-items {
+  margin-left: 5px;
+
+  & > div {
+    margin-top: 10px;
+    border-bottom: 2px solid #5c5c5b;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .doctrine-item {
+    display: flex;
+
+    .left-side {
+      /*flex: 1;*/
+      .cost-normal {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        & > div {
+          margin-bottom: 5px;
+          &:last-child {
+            margin-bottom: 0px;
+          }
+        }
+      }
+    }
+
+    .right-side {
+      /*flex: 1;*/
+      padding-left: 18px;
+
+      .field-front-title {
+        font-weight: bold;
+      }
+
+      .body {
+        font-size: 14px;
+        word-break: break-word;
+        p {
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+}
+
+.field-doctrine-items, .doctrine-item-node .pictures {
+
+  .field-image {
+
+    img {
+      display: block;
+      -webkit-box-shadow: -1px 1px 6px 2px rgba(0, 0, 0, 1);
+      -moz-box-shadow: -1px 1px 6px 2px rgba(0, 0, 0, 1);
+      box-shadow: -1px 1px 6px 2px rgba(0, 0, 0, 1);
+    }
+
+    z-index: 9;
+  }
+}
+
+.image-points-wrapper {
+  position: relative;
+
+  .field-activation-points {
+    position: absolute;
+    top: 22px;
+    left: -10px;
+    z-index: 10;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    color: #fff;
+    background: green;//#804d4d;
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 2px solid #000;
+    -webkit-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.35);
+    box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.doctrine-node.full {
+
+  .pictures {
+    padding-bottom: 7px;
+  }
+}
+
+.doctrine-item-node {
+
+  .pictures {
+    padding-bottom: 10px;
+  }
+}
+
+.commanders-view {
+  padding: 20px;
+}
+
+.doctrine-items-list {
+
+  .views-row {
+    margin-top: 5px;
+    border-bottom: 2px solid #5c5c5b;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .doctrine-node.teaser {
+    display: flex;
+  }
+
+  .field-doctrine-items {
+    display: flex;
+
+    & > div {
+      border-bottom: none;
+      margin-left: 15px;
+    }
+  }
+}
+
+.doctrine-item-node.teaser {
+  display: flex;
+
+  .field-image {
+    display: block;
+  }
+
+  .views-element-container {
+
+    & > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .views-row {
+        background: #fff;
+        margin: 3px 3px 15px;
+        border: 2px solid #5c5c5b;
+        padding: 7px 7px 14px;
+      }
+    }
+
+    .doctrine-node.teaser {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field-doctrine-items {
+      display: block;
+      margin-left: 5px;
+
+      & > div {
+        margin-left: 0px;
+      }
+    }
+  }
+}
+
+.field-related-units, .field-related-buildings, .field-produce-base-buildings, .field-builds-by {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.produce-units-wrapper {
+  margin-left: 30px;
+}
+
+.coi-homepage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  .views-row {
+    margin-bottom: 15px;
+    div {
+      text-align: center;
+    }
+  }
+}
+
+/* navbar dropdown */
+
+navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #ccc;
+
+  .navbar-right {
+    line-height: 41px;
+  }
+
+  & > div {
+    display: flex;
+
+    nav#block-mainnavigation {
+
+      & > ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        align-items: center;
+
+        li {
+          position: relative;
+
+          a {
+            display: block;
+            padding: 10px 20px;
+            text-align: center;
+            color: #fff;
+            background: #5c5c5b;
+            border: 1px solid #8d6e63;
+
+            &.is-active, &:hover {
+              background: green;
+            }
+          }
+
+          ul {
+            /*margin: 20px 0 0 0;*/
+            padding: 0;
+            list-style: none;
+
+            position: absolute;
+            top: 40px;
+            left: 0px;
+            width: 180px;
+            z-index: 20;
+
+            display: none;
+          }
+
+          &:hover {
+            ul {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    div#block-languagedropdownswitcher {
+
+      .chosen-single {
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+      }
+
+      .chosen-drop {
+
+        .chosen-results {
+
+          li {
+            font-size: 18px;
+            padding: 12px 6px;
+          }
+        }
+      }
+
+      .chosen-container-single .chosen-single div {
+        top: 7px;
+      }
+    }
+  }
+  .mobile-toggle {
+    display: none;
+    flex: 0 0 40px;
+    min-width: 40px;
+    font-size: 36px;
+    vertical-align: middle;
+    color: #fff;
+    background: #444;
+    text-align: center;
+    height: 44px;
+    margin-left: 10px;
+  }
+}
+
+@media all and (max-width: 800px) {
+  navbar {
+    & > div {
+      nav#block-mainnavigation {
+        display: none;
+
+        & > ul {
+          display: initial;
+
+          li ul {
+            display: block;
+            position: initial;
+            li {
+              padding-left: 10px;
+            }
+          }
+        }
+        &.open {
+          display: block;
+        }
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+    }
+  }
+
+  .content-node {
+
+    table.unit--improvements-table {
+
+      thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      /* Hide table headers (but not display: none;, for accessibility) */
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+      }
+
+      td:nth-of-type(1):before {
+        content: "";
+      }
+
+      td:nth-of-type(2):before {
+        content: "";
+      }
+
+      td:nth-of-type(3):before {
+        content: "";
+      }
+
+      td:nth-of-type(4):before {
+        content: "";
+      }
+    }
+  }
+}
+
+.content-node .section-wrapper.specification {
+  background: #fff;
+  li {
+    overflow-wrap: break-word;
+
+    /*a {
+      color: #12c77a;
+    }*/
+
+    padding-bottom: 10px;
+  }
+}
+
+@media all and (max-width: 800px) {
+  .squad-table {
+    th,td {
+      word-break: break-all;
+      font-size: 11px;
+      & > div {
+        font-size: 11px;
+      }
+    }
+  }
+
+  .content-node {
+    flex-direction: column-reverse;
+  }
+
+  .views-element-container {
+
+    .commanders-view {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .views-row {
+        background: #fff;
+        margin: 3px 3px 15px;
+        border: 2px solid #5c5c5b;
+        padding: 7px 7px 14px;
+
+        &:last-child {
+          border-bottom: 2px solid #5c5c5b;
+        }
+      }
+
+      .doctrine-node.teaser {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .field-doctrine-items {
+        display: block;
+        margin-left: 5px;
+
+        & > div {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+
+  .doctrine-item-node {
+    display: flex;
+
+    .field-image {
+      display: block;
+    }
+
+    .views-element-container {
+
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .views-row {
+          background: #fff;
+          margin: 3px 3px 15px;
+          border: 2px solid #5c5c5b;
+          padding: 7px 7px 14px;
+
+          &:last-child {
+            border-bottom: 2px solid #5c5c5b;
+          }
+        }
+      }
+
+      .doctrine-node.teaser {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .field-doctrine-items {
+        display: block;
+        margin-left: 5px;
+
+        & > div {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+}
+
+.per-one-member, .capacity, .field-manpower, .field-fuel, .field-munitions, .field-capacity, .field-reinforce-cost {
+  font-size: 15px;
+  &:before {
+    content: '';
+    font-size: 0;
+    display: inline-block;
+    background-size: cover;
+    resize: both;
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+}
+
+.per-one-member {
+  &:before {
+    margin-right: 0px;
+  }
+}
+
+.field-manpower, .field-reinforce-cost, .per-one-member {
+  &:before {
+    background-image: url("../images/manpower.png");
+  }
+}
+
+.field-fuel {
+  &:before {
+    background-image:url("../images/fuel.png");
+  }
+}
+
+.field-munitions {
+  &:before {
+    background-image:url("../images/munitions.png");
+  }
+}
+
+.field-capacity, .capacity {
+  &:before {
+    background-image:url("../images/capacity.png");
+  }
+}
+
+.squad-table {
+  position: relative;
+  border: 1px solid grey;
+  margin: 20px;
+
+  .image-column {
+    position: relative;
+
+    .field-small-image {
+
+    }
+
+    .field-badge-weapon-image {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: #000;
+      padding-right: 3px;
+      width: 47px;
+      border-radius: 10px;
+    }
+
+    .field-badge-image {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background: #000;
+      padding: 0px;
+      width: 36px;
+      border-radius: 10px;
+    }
+  }
+
+  .title {
+    max-width: 140px;
+  }
+
+  .cost {
+    min-width: 60px;
+  }
+
+  th, td {
+    padding: 2px;
+    border: 1px solid grey;
+    text-align: center;
+    &.title {
+      min-width: 40px;
+    }
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  }
+
+
+  th.cost, td.cost, th.title, td.title {
+    text-align: left;
+  }
+}

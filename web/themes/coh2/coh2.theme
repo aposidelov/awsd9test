@@ -1,0 +1,659 @@
+<?php
+
+use Drupal\views\Views;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function coh2_preprocess_paragraph(&$variables) {
+  if ($variables['paragraph']->bundle() === 'weapon_improvement') {
+    $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $improvement_node = $variables['paragraph']
+      ->get('field_improvement')
+      ->entity;
+    if ($improvement_node && $improvement_node->hasTranslation($language)) {
+      $improvement_node = $improvement_node->getTranslation($language);
+    }
+    if (!isset($variables['content']['field_title'][0])
+      && $improvement_node
+      && !$improvement_node->get('field_front_title')->isEmpty()) {
+      $variables['content']['field_title'] = $improvement_node
+        ->get('field_front_title')
+        ->view('full');
+    }
+    if (!isset($variables['content']['field_description'][0])
+      && $improvement_node
+      && !$improvement_node->get('body')->isEmpty()) {
+      $variables['content']['field_description'] = $improvement_node
+        ->get('body')
+        ->view('full');
+    }
+    if ($improvement_node
+      && !$improvement_node->get('field_manpower')->isEmpty()) {
+      $variables['content']['field_manpower'] = $improvement_node
+        ->get('field_manpower')
+        ->view('full');
+    }
+    if ($improvement_node
+      && !$improvement_node->get('field_fuel')->isEmpty()) {
+      $variables['content']['field_fuel'] = $improvement_node
+        ->get('field_fuel')
+        ->view('full');
+    }
+    if (!isset($variables['content']['field_munitions'][0])
+      && $improvement_node
+      && !$improvement_node->get('field_munitions')->isEmpty()) {
+      $variables['content']['field_munitions'] = $improvement_node
+                                                  ->get('field_munitions')
+                                                  ->view('full');
+    }
+    if (isset($variables['content']['field_unit_override'][0])) {
+      $variables['content']['field_unit_override'][0]['#title'] = t('View unit details');
+    }
+  }
+  elseif ($variables['paragraph']->bundle() === 'ability') {
+    $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    $ability_node = $variables['paragraph']
+      ->get('field_ability_node')
+      ->entity;
+    if (!isset($ability_node)) {
+      return;
+    }
+    if ($ability_node->hasTranslation($language)) {
+      $ability_node = $ability_node->getTranslation($language);
+    }
+    $variables['content']['field_title'] = $ability_node
+      ->get('field_front_title')
+      ->view('full');
+    $variables['content']['field_ability_type'] = $ability_node
+      ->get('field_ability_type')
+      ->view('full');
+    $variables['content']['field_colddown'] = $ability_node
+      ->get('field_colddown')
+      ->view('full');
+    $variables['content']['field_duration'] = $ability_node
+      ->get('field_duration')
+      ->view('full');
+    if (!isset($variables['content']['field_description'][0])
+      && $ability_node
+      && !$ability_node->get('field_description')->isEmpty()) {
+      //dump($ability_node->label());
+      $variables['content']['field_description'] = $ability_node
+        ->get('field_description')
+        ->view('full');
+    }
+    if (!isset($variables['content']['field_munitions'][0])
+      && $ability_node
+      && !$ability_node->get('field_munitions')->isEmpty()) {
+      $variables['content']['field_munitions'] = $ability_node
+        ->get('field_munitions')
+        ->view('full');
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function coh2_preprocess_node(&$variables) {
+  if ($variables['node']->bundle() === 'unit') {
+    $unit = $variables['node'];
+    $unit_type = $unit->get('field_unit_type')->value;
+    //dump($unit_type);
+    if (!$unit->get('field_parent')->isEmpty()) {
+      $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+      if ($unit->get('field_parent')->entity->hasTranslation($language)) {
+        $parent_unit_node = $unit->get('field_parent')->entity->getTranslation($language);
+
+        // Don't create any extra fields for Thumbnail view mode that is
+        // shown for Doctrine Item as Related Unit. But requires for those units to
+        // upload Image because link and tooltip are getting from separate module.
+        if ($variables['view_mode'] === 'thumbnail') {
+          return;
+        }
+      }
+      $variables['content']['field_parent'][0]['#title'] = $parent_unit_node->get('field_front_title')->value;
+      if (!isset($variables['content']['field_image'][0])) {
+        $variables['content']['field_image'] = $parent_unit_node->get('field_image')->view('full');
+      }
+      if (!isset($variables['content']['field_small_image'][0])) {
+        $variables['content']['field_small_image'] = $parent_unit_node->get('field_small_image')->view('full');
+        if (isset($variables['content']['field_small_image'][0]) &&
+          isset($variables['content']['field_small_image'][0]['#url'])) {
+          $variables['content']['field_small_image'][0]['#url']->setRouteParameter('node', $unit->id());
+        }
+      }
+
+      if (!isset($variables['content']['field_badge_image'][0])) {
+        $variables['content']['field_badge_image'] = $parent_unit_node->get('field_badge_image')->view('full');
+      }
+      if (!isset($variables['content']['body'][0])) {
+        $variables['content']['body'] = $parent_unit_node->get('body')->view('full');
+      }
+      if (!isset($variables['content']['field_long_description'][0])) {
+        $variables['content']['field_long_description'] = $parent_unit_node->get('field_long_description')->view('full');
+      }
+      if (!isset($variables['content']['field_is_doctrine_unit'][0])) {
+        $variables['content']['field_is_doctrine_unit'] = $parent_unit_node->get('field_is_doctrine_unit')->view('full');
+      }
+      if (!isset($variables['content']['field_nation'][0])) {
+        $variables['content']['field_nation'] = $parent_unit_node->get('field_nation')->view('full');
+      }
+      if (!isset($variables['content']['field_fuel'][0])) {
+        $variables['content']['field_fuel'] = $parent_unit_node->get('field_fuel')->view('full');
+      }
+      if (!isset($variables['content']['field_manpower'][0])) {
+        $variables['content']['field_manpower'] = $parent_unit_node->get('field_manpower')->view('full');
+      }
+      if (!isset($variables['content']['field_munitions'][0])) {
+        $variables['content']['field_munitions'] = $parent_unit_node->get('field_munitions')->view('full');
+      }
+      if (!isset($variables['content']['field_reinforce_cost'][0])) {
+        $variables['content']['field_reinforce_cost'] = $parent_unit_node->get('field_reinforce_cost')->view('full');
+      }
+      if (!isset($variables['content']['field_range_of_fire'][0])) {
+        $variables['content']['field_range_of_fire'] = $parent_unit_node->get('field_range_of_fire')->view('full');
+      }
+      if (!isset($variables['content']['field_range_of_fire_vet'][0])) {
+        $variables['content']['field_range_of_fire_vet'] = $parent_unit_node->get('field_range_of_fire_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_sight_range'][0])) {
+        $variables['content']['field_sight_range'] = $parent_unit_node->get('field_sight_range')->view('full');
+      }
+      if (!isset($variables['content']['field_sight_range_vet'][0])) {
+        $variables['content']['field_sight_range_vet'] = $parent_unit_node->get('field_sight_range_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_strength_vet'][0])) {
+        $variables['content']['field_strength_vet'] = $parent_unit_node->get('field_strength_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_damage_on_penetration_vets'][0])) {
+        $variables['content']['field_damage_on_penetration_vets'] = $parent_unit_node->get('field_damage_on_penetration_vets')->view('full');
+      }
+      if (!isset($variables['content']['field_damage_on_penetration'][0])) {
+        $variables['content']['field_damage_on_penetration'] = $parent_unit_node->get('field_damage_on_penetration')->view('full');
+      }
+      if (!isset($variables['content']['field_damage_on_non_penetration'][0])) {
+        $variables['content']['field_damage_on_non_penetration'] = $parent_unit_node->get('field_damage_on_non_penetration')->view('full');
+      }
+      if (!isset($variables['content']['field_effective_against'][0])) {
+        $variables['content']['field_effective_against'] = $parent_unit_node->get('field_effective_against')->view('full');
+      }
+      if (!isset($variables['content']['field_combat_advantage'][0])) {
+        $variables['content']['field_combat_advantage'] = $parent_unit_node->get('field_combat_advantage')->view('full');
+      }
+      if (!isset($variables['content']['field_group_amount'][0])) {
+        $variables['content']['field_group_amount'] = $parent_unit_node->get('field_group_amount')->view('full');
+      }
+      if (!isset($variables['content']['field_armor_front'][0])) {
+        $variables['content']['field_armor_front'] = $parent_unit_node->get('field_armor_front')->view('full');
+      }
+      if (!isset($variables['content']['field_armor_front_vet'][0])) {
+        $variables['content']['field_armor_front_vet'] = $parent_unit_node->get('field_armor_front_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_armor_back'][0])) {
+        $variables['content']['field_armor_back'] = $parent_unit_node->get('field_armor_back')->view('full');
+      }
+      if (!isset($variables['content']['field_armor_back_vet'][0])) {
+        $variables['content']['field_armor_back_vet'] = $parent_unit_node->get('field_armor_back_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_long_range_pen_num'][0])) {
+        $variables['content']['field_long_range_pen_num'] = $parent_unit_node->get('field_long_range_pen_num')->view('full');
+      }
+      if (!isset($variables['content']['field_long_range_pen_num_vet'][0])) {
+        $variables['content']['field_long_range_pen_num_vet'] = $parent_unit_node->get('field_long_range_pen_num_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_speed'][0])) {
+        $variables['content']['field_speed'] = $parent_unit_node->get('field_speed')->view('full');
+      }
+      if (!isset($variables['content']['field_speed_vet'][0])) {
+        $variables['content']['field_speed_vet'] = $parent_unit_node->get('field_speed_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_reload_speed'][0])) {
+        $variables['content']['field_reload_speed'] = $parent_unit_node->get('field_reload_speed')->view('full');
+      }
+      if (!isset($variables['content']['field_reload_speed_vet'][0])) {
+        $variables['content']['field_reload_speed_vet'] = $parent_unit_node->get('field_reload_speed_vet')->view('full');
+      }
+      if (!isset($variables['content']['field_received_accuracy'][0])) {
+        $variables['content']['field_received_accuracy'] = $parent_unit_node->get('field_received_accuracy')->view('full');
+      }
+      if (!isset($variables['content']['field_received_accuracy_vet'][0])) {
+        $variables['content']['field_received_accuracy_vet'] = $parent_unit_node->get('field_received_accuracy_vet')->view('full');
+      }
+
+
+
+      if (!isset($variables['content']['field_veterancy_items'][1])
+        && isset($variables['content']['field_veterancy_items']['#items'])
+        && !is_null($variables['content']['field_veterancy_items']['#items'])) {
+        $variables['content']['field_veterancy_items'] = $parent_unit_node->get('field_veterancy_items')->view('full');
+        $items_number = $variables['content']['field_veterancy_items']['#items']->count();
+        for ($i = 0; $i < $items_number; $i++) {
+          if (!isset($variables['content']['field_veterancy_items'][$i])
+            && !isset($variables['content']['field_veterancy_items'][$i]['#paragraph'])) {
+            continue;
+          }
+          if ($variables['content']['field_veterancy_items'][$i]['#paragraph']->hasTranslation($language)) {
+            $variables['content']['field_veterancy_items'][$i]['#paragraph'] = $variables['content']['field_veterancy_items'][$i]['#paragraph']->getTranslation($language);
+          }
+        }
+      }
+      if (!isset($variables['content']['field_capacity'][0])) {
+        $variables['content']['field_capacity'] = $parent_unit_node->get('field_capacity')->view('full');
+      }
+      if (!isset($variables['content']['field_build_time'][0])) {
+        $variables['content']['field_build_time'] = $parent_unit_node->get('field_build_time')->view('full');
+      }
+      if (!isset($variables['content']['field_unit_health'][0])) {
+        $variables['content']['field_unit_health'] = $parent_unit_node->get('field_unit_health')->view('full');
+      }
+      // Entity reference translation example.
+      if (!isset($variables['content']['field_builds_in'][0])) {
+        $variables['content']['field_builds_in'] = $parent_unit_node->get('field_builds_in')->view('full');
+        if (isset($variables['content']['field_builds_in'][0])
+          && isset($variables['content']['field_builds_in'][0]['#node'])
+          && !is_null($variables['content']['field_builds_in'][0]['#node'])
+          && $variables['content']['field_builds_in'][0]['#node']->hasTranslation($language)) {
+          $variables['content']['field_builds_in'][0]['#node'] = $variables['content']['field_builds_in'][0]['#node']->getTranslation($language);
+        }
+      }
+      if (!isset($variables['content']['field_wipe_abilities'][0])) {
+        $variables['content']['field_wipe_abilities'] = $parent_unit_node->get('field_wipe_abilities')->view('full');
+        if (isset($variables['content']['field_wipe_abilities'][0])
+          && isset($variables['content']['field_wipe_abilities'][0]['#node'])
+          && !is_null($variables['content']['field_wipe_abilities'][0]['#node'])
+          && $variables['content']['field_wipe_abilities'][0]['#node']->hasTranslation($language)) {
+          $variables['content']['field_wipe_abilities'][0]['#node'] = $variables['content']['field_wipe_abilities'][0]['#node']->getTranslation($language);
+        }
+      }
+      // Entity reference translation example.
+      if (!isset($variables['content']['field_builds_by'][0])) {
+        $variables['content']['field_builds_by'] = $parent_unit_node->get('field_builds_by')->view('full');
+        if (isset($variables['content']['field_builds_by'][0])
+          && isset($variables['content']['field_builds_by'][0]['#node'])
+          && !is_null($variables['content']['field_builds_by'][0]['#node'])
+          && $variables['content']['field_builds_by'][0]['#node']->hasTranslation($language)) {
+          $variables['content']['field_builds_by'][0]['#node'] = $variables['content']['field_builds_by'][0]['#node']->getTranslation($language);
+        }
+      }
+      if (!isset($variables['content']['field_produce_base_buildings'][0])) {
+        $variables['content']['field_produce_base_buildings'] = $parent_unit_node->get('field_produce_base_buildings')->view('full');
+        if (isset($variables['content']['field_produce_base_buildings'][0])
+          && isset($variables['content']['field_produce_base_buildings'][0]['#node'])
+          && !is_null($variables['content']['field_produce_base_buildings'][0]['#node'])
+          && $variables['content']['field_produce_base_buildings'][0]['#node']->hasTranslation($language)) {
+          $variables['content']['field_produce_base_buildings'][0]['#node'] = $variables['content']['field_produce_base_buildings'][0]['#node']->getTranslation($language);
+        }
+      }
+      if (!isset($variables['content']['field_produce_field_buildings'][0])) {
+        $variables['content']['field_produce_field_buildings'] = $parent_unit_node->get('field_produce_field_buildings')->view('full');
+        if (isset($variables['content']['field_produce_field_buildings']['#items'])
+          && !is_null($variables['content']['field_produce_field_buildings']['#items'])) {
+          $items_number = $variables['content']['field_produce_field_buildings']['#items']->count();
+          for ($i = 0; $i < $items_number; $i++) {
+            if (!isset($variables['content']['field_produce_field_buildings'][$i])
+              && !isset($variables['content']['field_produce_field_buildings'][$i]['#paragraph'])) {
+              continue;
+            }
+            if ($variables['content']['field_produce_field_buildings'][$i]['#paragraph']->hasTranslation($language)) {
+              $variables['content']['field_produce_field_buildings'][$i]['#paragraph'] = $variables['content']['field_produce_field_buildings'][$i]['#paragraph']->getTranslation($language);
+            }
+          }
+        }
+      }
+      if (!isset($variables['content']['field_producible_in_doctrines'][0])) {
+        $variables['content']['field_producible_in_doctrines'] = $parent_unit_node->get('field_producible_in_doctrines')->view('full');
+        if (isset($variables['content']['field_producible_in_doctrines'][0])
+          && isset($variables['content']['field_producible_in_doctrines'][0]['#node'])
+          && !is_null($variables['content']['field_producible_in_doctrines'][0]['#node'])
+          && $variables['content']['field_producible_in_doctrines'][0]['#node']->hasTranslation($language)) {
+          $variables['content']['field_producible_in_doctrines'][0]['#node'] = $variables['content']['field_producible_in_doctrines'][0]['#node']->getTranslation($language);
+        }
+      }
+      $is_override_parent_abilities = $unit->get('field_is_over_parent_abilities')->value;
+      // Paragraph translation example.
+      if (!$is_override_parent_abilities) {
+        $variables['content']['field_abilities'] = $parent_unit_node->get('field_abilities')->view('full');
+        if (isset($variables['content']['field_abilities']['#items'])
+          && !is_null($variables['content']['field_abilities']['#items'])) {
+          $items_number = $variables['content']['field_abilities']['#items']->count();
+          for ($i = 0; $i < $items_number; $i++) {
+            if (!isset($variables['content']['field_abilities'][$i])
+              && !isset($variables['content']['field_abilities'][$i]['#paragraph'])
+              ) {
+              continue;
+            }
+            if ($variables['content']['field_abilities'][$i]['#paragraph']->hasTranslation($language)) {
+              $variables['content']['field_abilities'][$i]['#paragraph'] = $variables['content']['field_abilities'][$i]['#paragraph']->getTranslation($language);
+            }
+          }
+        }
+      }
+
+      if (!isset($variables['content']['field_produce_small_forts']['#items'])) {
+        $variables['content']['field_produce_small_forts'] = $parent_unit_node->get('field_produce_small_forts')->view('full');
+        /*if (isset($variables['content']['field_produce_small_forts']['#items'])) {
+          $items_number = $variables['content']['field_produce_small_forts']['#items']->count();
+          for ($i = 0; $i < $items_number; $i++) {
+            if (!isset($variables['content']['field_produce_small_forts'][$i])
+              && !isset($variables['content']['field_produce_small_forts'][$i]['#paragraph'])) {
+              continue;
+            }
+            $variables['content']['field_produce_small_forts'][$i]['#paragraph'] = $variables['content']['field_produce_small_forts'][$i]['#paragraph']->getTranslation($language);
+          }
+        }*/
+      }
+    }
+    if (isset($variables['content']['field_long_range_pen_num'])
+      && isset($variables['content']['field_long_range_pen_num'][0])) {
+      $variables['content']['field_long_range_pen_num'][0]['#markup'] = coh2_format_penetration($variables['content']['field_long_range_pen_num'][0]['#markup']);
+    }
+    if (isset($variables['content']['field_long_range_pen_num_vet'])
+      && isset($variables['content']['field_long_range_pen_num_vet'][0])) {
+      $variables['content']['field_long_range_pen_num_vet'][0]['#markup'] = coh2_format_penetration($variables['content']['field_long_range_pen_num_vet'][0]['#markup']);
+    }
+    if (isset($variables['content']['field_armor_front'])
+      && isset($variables['content']['field_armor_front'][0])
+      && isset($variables['content']['field_armor_back'])
+      && isset($variables['content']['field_armor_back'][0])) {
+      $variables['content']['field_armor_front'][0]['#markup'] = $variables['content']['field_armor_front'][0]['#markup'] . ' / ' . $variables['content']['field_armor_back'][0]['#markup'];
+    }
+    if (isset($variables['content']['field_armor_front_vet'])
+      && isset($variables['content']['field_armor_front_vet'][0])
+      && isset($variables['content']['field_armor_back_vet'])
+      && isset($variables['content']['field_armor_back_vet'][0])) {
+      $variables['content']['field_armor_front_vet'][0]['#markup'] = $variables['content']['field_armor_front_vet'][0]['#markup'] . ' / ' . $variables['content']['field_armor_back_vet'][0]['#markup'];
+    }
+    if (isset($variables['content']['field_received_accuracy'])
+      && isset($variables['content']['field_received_accuracy'][0])) {
+      $variables['content']['field_received_accuracy'][0]['#markup'] = coh2_format_received_accuracy($variables['content']['field_received_accuracy'][0]['#markup']);
+    }
+    if (isset($variables['content']['field_received_accuracy_vet'])
+      && isset($variables['content']['field_received_accuracy_vet'][0])) {
+      $variables['content']['field_received_accuracy_vet'][0]['#markup'] = coh2_format_received_accuracy($variables['content']['field_received_accuracy_vet'][0]['#markup']);
+    }
+    $unit_types = $unit->get('field_unit_type')->getString();
+    $view_id = '';
+    if ($unit->get('field_is_flame_unit')->value) {
+      $view_id = 'flamethrower_units_table';
+    }
+    elseif ($unit->get('field_is_anti_tank_squad')->value) {
+      $view_id = 'anti_tank_squads_table';
+    }
+    elseif ($unit->get('field_is_medium_range_squad')->value) {
+      $view_id = 'medium_range_squad_table';
+    }
+    elseif ($unit->get('field_is_short_range_squad')->value) {
+      $view_id = 'short_range_squad_table';
+    }
+    elseif ($unit->get('field_is_long_range_squad')->value) {
+      $view_id = 'long_range_squad_table';
+    }
+    elseif ($unit->get('field_is_heavy_tanks')->value) {
+      $view_id = 'heavy_tanks_table';
+    }
+    elseif ($unit->get('field_is_medium_tanks')->value) {
+      $view_id = 'medium_tanks_table';
+    }
+    elseif ($unit->get('field_is_tank_destroyers')->value) {
+      $view_id = 'tank_destroyers_table';
+    }
+    elseif ($unit->get('field_is_anti_air_unit')->value) {
+      $view_id = 'anti_air_units_table';
+    }
+    elseif ($unit->get('field_is_light_tanks_armored_car')->value) {
+      $view_id = 'light_tanks_armored_cars_table';
+    }
+    elseif ($unit->get('field_is_snipers')->value) {
+      $view_id = 'snipers_table';
+    }
+    elseif ($unit->get('field_is_anti_tank_guns')->value) {
+      $view_id = 'anti_tank_guns_table';
+    }
+    elseif ($unit->get('field_is_transport')->value) {
+      $view_id = 'transports_table';
+    }
+    elseif ($unit->get('field_is_machine_guns')->value) {
+      $view_id = 'machine_guns_table';
+    }
+    elseif ($unit->get('field_is_mortars_and_sup_guns')->value) {
+      $view_id = 'mortars_and_support_guns_table';
+    }
+    elseif ($unit->get('field_is_rocket_launchers')->value) {
+      $view_id = 'rocket_launchers_table';
+    }
+    elseif ($unit->get('field_is_long_range_artillery')->value) {
+      $view_id = 'long_range_artillery_table';
+    }
+    elseif ($unit->get('field_is_heavy_anti_tank_emp')->value) {
+      $view_id = 'heavy_anti_tank_emplacements_table';
+    }
+    elseif ($unit->get('field_is_capture_unit')->value) {
+      $view_id = 'capture_rate_units_table';
+    }
+    elseif ($unit->get('field_is_repair_unit')->value) {
+      $view_id = 'repair_units_table';
+    }
+
+    $url = Url::fromRoute("view.{$view_id}.page_1");
+    $variables['compare_button'] = [];
+    if (!empty($view_id)) {
+      $variables['compare_button'] = [
+        '#type' => 'link',
+        '#title' => t('Compare with similar units'),
+        '#url' => $url,
+        '#attributes' => [
+          'class' => ['compare-button-link']
+        ]
+      ];
+    }
+
+
+  }
+  elseif ($variables['node']->bundle() === 'doctrine_item') {
+    $doctrine_item = $variables['node'];
+    if ($variables['view_mode'] === 'full') {
+      $variables['content']['related_doctrines_view'] = views_embed_view('coh_get_doctrine_by_item', 'default', $doctrine_item->id());
+    }
+  }
+  elseif ($variables['node']->bundle() === 'nation') {
+    $nation = $variables['node'];
+    if ($variables['view_mode'] === 'full') {
+      $variables['content']['buildings_view'] = views_embed_view('coh_get_buildings_by_nation', 'default', $nation->id());
+      $variables['content']['doctrines_view'] = views_embed_view('coh_get_doctrines_by_nation', 'default', $nation->id());
+      $variables['content']['doctrine_units_view'] = views_embed_view('coh_get_doctrine_units_by_nation', 'default', $nation->id());
+    }
+  }
+  if (isset($variables['content']['field_manpower'])
+    && isset($variables['content']['field_manpower'][0])
+    && isset($variables['content']['field_group_amount'])
+    && isset($variables['content']['field_group_amount'][0])) {
+    $variables['field_one_unit_cost'] = round($variables['content']['field_manpower'][0]['#markup'] / $variables['content']['field_group_amount'][0]['#markup'], 1);
+  }
+
+  if ($variables['view_mode'] === 'table_repair'
+    && isset($variables['content']['field_base_repair_rate_per_unit'][0])
+    && isset($variables['content']['field_group_amount'][0])
+  ) {
+    $base_rate = $variables['content']['field_base_repair_rate_per_unit'][0]['#markup'];
+    if (isset($variables['content']['field_vet_repair_rate_per_unit'][0])) {
+      $vet_rate = $variables['content']['field_vet_repair_rate_per_unit'][0]['#markup'];
+    }
+    else {
+      $vet_rate = 0;
+    }
+    $squad_strength = $variables['content']['field_group_amount'][0]['#markup'];
+    if (isset($variables['content']['field_group_amount_upg_vet'][0])) {
+      $squad_strength_upg_vet = $variables['content']['field_group_amount_upg_vet'][0]['#markup'];
+    }
+    else {
+      $squad_strength_upg_vet = 0;
+    }
+
+    $squad_repair_rate_from = $base_rate * $squad_strength;
+    $variables['squad_repair_rate_range'] = $squad_repair_rate_from;
+
+    if (!empty($squad_strength_upg_vet) || !empty($vet_rate)) {
+      if (empty($squad_strength_upg_vet)) {
+        $squad_strength_upg_vet = $squad_strength;
+      }
+      $squad_repair_rate_to = ($base_rate + $vet_rate) * $squad_strength_upg_vet;
+      $variables['squad_repair_rate_range'] .= ' - ' . $squad_repair_rate_to;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function coh2_preprocess_page_title(&$variables) {
+  $node = \Drupal::request()
+    ->attributes
+    ->get('node');
+  if (!is_null($node) && $node->hasField('field_front_title')) {
+    $variables['title'] = $node->get('field_front_title')->value;
+  }
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function coh2_preprocess_html(&$variables) {
+  $node = \Drupal::request()
+    ->attributes
+    ->get('node');
+  if (!is_null($node) && $node->hasField('field_front_title')) {
+    $front_title = $node->get('field_front_title')->value . ' | CoH2 (Company of Heroes 2)';
+    $variables['head_title']['title'] = $front_title;
+    $variables['head_title_array']['title'] = $front_title;
+  }
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function coh2_preprocess_page(&$variables) {
+  if ($variables['is_front']) {
+    $fractions_view = views_embed_view('coi_homepage', 'embed_1');
+    $variables['fractions_view'] = \Drupal::service('renderer')->render($fractions_view);
+  }
+}
+
+/**
+ * Implements hook_preprocess_breadcrumb().
+ */
+function coh2_preprocess_breadcrumb(&$variables) {
+  if (($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']) {
+    $type = $node->bundle();
+    if ($type === 'unit'
+    && $node->get('field_parent')->getValue() !== []) {
+      $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      if ($node->get('field_parent')->entity->hasTranslation($language)) {
+        $parent_unit_node = $node->get('field_parent')->entity->getTranslation($language);
+      }
+      $variables['breadcrumb'][] = array(
+        'text' => $parent_unit_node->get('field_front_title')->value,
+        'url' => $parent_unit_node->URL()
+      );
+    }
+
+    if ($type === 'building'
+    || $type === 'doctrine_item'
+    || $type === 'unit') {
+      $variables['breadcrumb'][] = array(
+        'text' => $node->get('field_front_title')->value
+      );
+    }
+    elseif ($type === 'nation'
+      || $type === 'doctrine'
+      || $type === 'guide') {
+      $variables['breadcrumb'][] = array(
+        'text' => $node->getTitle()
+      );
+    }
+
+  }
+  elseif (($view_id = \Drupal::routeMatch()->getParameter('view_id'))
+    && in_array($view_id, [
+      'commanders',
+      'short_range_squad_table',
+      'ambush_squads_table',
+      'anti_air_units_table',
+      'anti_tank_guns_table',
+      'anti_tank_squads_table',
+      'builders_table',
+      'capture_rate_units_table',
+      'engine_damage_squads_table',
+      'flamethrower_units_table',
+      'heavy_tanks_table',
+      'increased_sight_range_units_table',
+      'light_tanks_armored_cars_table',
+      'light_vehicles_table',
+      'long_range_artillery_table',
+      'long_range_squad_table',
+      'machine_guns_table',
+      'medical_units_table',
+      'medium_range_squad_table',
+      'medium_tanks_table',
+      'miners_table',
+      'mortars_and_support_guns_table',
+      'rocket_launchers_table',
+      'repair_units_table',
+      'scout_cars_table',
+      'snipers_table',
+      'squad_wipers_table',
+      'stealth_detectors_table',
+      'tank_destroyers_table',
+      'aura_units_table'
+    ])) {
+    $view = Views::getView($view_id);
+    $variables['breadcrumb'][] = array(
+      'text' => $view->getTitle()
+    );
+  }
+}
+
+function coh2_format_penetration($number) {
+  if ($number < 100) {
+    return t('Very low (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 150) {
+    return t('Low (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 200) {
+    return t('Medium (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 250) {
+    return t('High (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 300) {
+    return t('Very high (@number)', ['@number' => $number]);
+  }
+  else {
+    return t('Guaranteed');
+  }
+}
+
+function coh2_format_received_accuracy($number) {
+  if ($number < 0.5) {
+    return t('Very high (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 0.60) {
+    return t('High (@number)', ['@number' => $number]);
+  }
+  elseif ($number < 0.85) {
+    return t('Medium (@number)', ['@number' => $number]);
+  }
+  elseif ($number <= 1) {
+    return t('Low (@number)', ['@number' => $number]);
+  }
+  else {
+    return t('Very low (@number)', ['@number' => $number]);
+  }
+
+
+
+}

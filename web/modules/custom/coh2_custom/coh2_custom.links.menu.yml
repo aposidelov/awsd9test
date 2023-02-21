@@ -1,0 +1,201 @@
+coh2_custom.coh2_pages:
+  title: Coh2 pages overview
+  route_name: coh2_custom.coh2_pages
+  parent: system.admin_config_ui
+  menu_name: admin
+
+coh2_custom.short_range_squads:
+  title: Short range squads
+  route_name: coh2_custom.short_range_squads
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.medium_range_squad:
+  title: Medium range squads
+  route_name: coh2_custom.medium_range_squad
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.long_range_squad:
+  title: Long range squads
+  route_name: coh2_custom.long_range_squad
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.builders:
+  title: Builders
+  route_name: coh2_custom.builders
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.repair_units:
+  title: Repair units
+  route_name: coh2_custom.repair_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.capture_rate_units:
+  title: Capture rate units
+  route_name: coh2_custom.capture_rate_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.anti_tank_squad:
+  title: Anti tank squad
+  route_name: coh2_custom.anti_tank_squad
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.engine_damage_squads:
+  title: Engine damage squads
+  route_name: coh2_custom.engine_damage_squads
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.ambush_squads:
+  title: Ambush squads
+  route_name: coh2_custom.ambush_squads
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.miners:
+  title: Miners
+  route_name: coh2_custom.miners
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.squad_wipers:
+  title: Squad-wipers
+  route_name: coh2_custom.squad_wipers
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.snipers:
+  title: Snipers
+  route_name: coh2_custom.snipers
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.stealth_detectors:
+  title: Stealth detectors
+  route_name: coh2_custom.stealth_detectors
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.scout_cars:
+  title: Scout cars
+  route_name: coh2_custom.scout_cars
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.light_vehicles:
+  title: Light vehicles
+  route_name: coh2_custom.light_vehicles
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.light_tanks_and_armored_cars:
+  title: Light Tanks and Armored Cars
+  route_name: coh2_custom.light_tanks_and_armored_cars
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.medium_tanks:
+  title: Medium tanks
+  route_name: coh2_custom.medium_tanks
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.heavy_tanks:
+  title: Heavy tanks
+  route_name: coh2_custom.heavy_tanks
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.tank_destroyers:
+  title: Tank destroyers
+  route_name: coh2_custom.tank_destroyers
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.rocket_launchers:
+  title: Rocket launchers
+  route_name: coh2_custom.rocket_launchers
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.machine_guns:
+  title: Machine guns
+  route_name: coh2_custom.machine_guns
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.anti_tank_guns:
+  title: Anti tank guns
+  route_name: coh2_custom.anti_tank_guns
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.mors_and_sup_guns:
+  title: Mortars and Support Guns
+  route_name: coh2_custom.mors_and_sup_guns
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.long_range_art:
+  title: Long Range Artillery
+  route_name: coh2_custom.long_range_art
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.increased_sight_range_units:
+  title: Increased Sight Range Units
+  route_name: coh2_custom.increased_sight_range_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.medical_units:
+  title: Medical Units
+  route_name: coh2_custom.medical_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.anti_air_units:
+  title: Anti-Air Units
+  route_name: coh2_custom.anti_air_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin
+
+coh2_custom.flamethrower_units:
+  title: Flamethrower Units
+  route_name: coh2_custom.flamethrower_units
+  parent: coh2_custom.coh2_pages
+  weight: -4
+  menu_name: admin

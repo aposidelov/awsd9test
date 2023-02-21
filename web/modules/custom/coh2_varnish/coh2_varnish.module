@@ -1,0 +1,58 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_form_system_performance_settings_alter().
+ */
+function coh2_varnish_form_system_performance_settings_alter(&$form, FormStateInterface $form_state) {
+  $day1 = 86400;
+  $month1 = $day1 * 30;
+  $form['caching']['page_cache_maximum_age']['#options'][$month1] = t('1 month');
+  $form['caching']['page_cache_maximum_age']['#options'][$month1 * 2] = t('2 months');
+  $form['caching']['page_cache_maximum_age']['#options'][$month1 * 6] = t('6 months');
+  $form['caching']['page_cache_maximum_age']['#options'][$month1 * 12] = t('1 year');
+  $form['caching']['page_cache_maximum_age']['#options'][$month1 * 24] = t('2 years');
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function coh2_varnish_node_update(EntityInterface $node) {
+  if (!in_array($node->bundle(), coh2_varnish_get_allowed_content_types())) {
+    return;
+  }
+  coh2_varnish_purge_node_translations($node);
+}
+
+/**
+ * Implements hook_node_predelete().
+ */
+function coh2_varnish_node_predelete(EntityInterface $node) {
+  if (!in_array($node->bundle(), coh2_varnish_get_allowed_content_types())) {
+    return;
+  }
+  coh2_varnish_purge_node_translations($node);
+}
+
+/**
+ * Get allowed content types that should be purged from varnish cache.
+ */
+function coh2_varnish_get_allowed_content_types() {
+  $allowed_content_types = \Drupal::config('coh2_varnish.settings')
+    ->get('content_types');
+  return array_filter($allowed_content_types);
+}
+
+/**
+ * Purge from varnish cache all available node translations.
+ */
+function coh2_varnish_purge_node_translations(EntityInterface &$node) {
+  foreach ($node->getTranslationLanguages() as $language) {
+    $language_id = $language->getId();
+    $translation = $node->getTranslation($language_id);
+    $url = $translation->toUrl('canonical', ['absolute' => TRUE])->toString();
+    exec("curl -I -X PURGE $url");
+  }
+}
