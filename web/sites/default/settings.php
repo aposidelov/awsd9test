@@ -765,10 +765,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  *
  * Keep this code block at the end of this file to take full effect.
  */
-#
-# if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-#   include $app_root . '/' . $site_path . '/settings.local.php';
-# }
+
 $databases['default']['default'] = array (
   'database' => 'aws-d9-test',
   'username' => 'admin',
@@ -779,10 +776,15 @@ $databases['default']['default'] = array (
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
+
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
+}
+
 $settings['config_sync_directory'] = 'sites/default/files/config_fmsR2WVN6jisE1CCir9vDHLz8u_CBxqJ2hIs08tBy-c339zzRGe_eZ4MbKF9JIHp0dg8AFDrnQ/sync';
 
-$settings['reverse_proxy'] = TRUE;
-$settings['reverse_proxy_addresses'] = array('127.0.0.1');
+//$settings['reverse_proxy'] = TRUE;
+//$settings['reverse_proxy_addresses'] = array('127.0.0.1');
 
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
