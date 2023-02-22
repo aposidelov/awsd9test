@@ -767,7 +767,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  */
 
 $databases['default']['default'] = array (
-  'database' => 'aws-d9-test',
+  'database' => 'aws_d9_test',
   'username' => 'admin',
   'password' => 'Wf49Y1$KdS',
   'prefix' => '',
