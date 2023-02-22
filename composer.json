@@ -30,6 +30,7 @@
         "drupal/core-project-message": "^9.3",
         "drupal/core-recommended": "^9.3",
         "drupal/ctools": "*",
+        "drupal/devel": "^5.1",
         "drupal/easy_breadcrumb": "*",
         "drupal/editor_advanced_link": "*",
         "drupal/entity_reference_revisions": "*",
